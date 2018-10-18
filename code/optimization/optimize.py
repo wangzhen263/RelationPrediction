@@ -1,9 +1,9 @@
-import tensorflow_backend.algorithms as tensorflow_algorithms
-import theano_backend.algorithms as theano_algorithms
-import shared.algorithms as shared_algorithms
+import optimization.tensorflow_backend.algorithms as tensorflow_algorithms
+import optimization.theano_backend.algorithms as theano_algorithms
+import optimization.shared.algorithms as shared_algorithms
 import theano
 from theano import tensor as T
-from abstract import BaseOptimizer
+from optimization.abstract import BaseOptimizer
 import numpy as np
 import tensorflow as tf
 
@@ -55,7 +55,7 @@ class TensorflowOptimizer(Optimizer):
     def loss(self, placeholder_input):
         #self.session = tf.Session()
         placeholder_input = self.stack.process_data(placeholder_input)
-        init_op = tf.initialize_all_variables()
+        init_op = tf.global_variables_initializer()
         self.session.run(init_op)
         
         feed_dict = dict(zip(self.placeholders, placeholder_input))
@@ -65,7 +65,7 @@ class TensorflowOptimizer(Optimizer):
         #self.session = tf.Session()
 
         placeholder_input = self.stack.process_data(placeholder_input)
-        init_op = tf.initialize_all_variables()
+        init_op = tf.global_variables_initializer()
         self.session.run(init_op)
         
         feed_dict = dict(zip(self.placeholders, placeholder_input))
@@ -75,7 +75,7 @@ class TensorflowOptimizer(Optimizer):
         #self.session = tf.Session()
         self.stack.set_session(self.session)
         
-        init_op = tf.initialize_all_variables()
+        init_op = tf.global_variables_initializer()
         self.session.run(init_op)
 
     def update_from_batch(self, processed_batch):        

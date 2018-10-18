@@ -85,12 +85,15 @@ decoder_settings.merge(general_settings)
 optimizer_settings.merge(general_settings)
 evaluation_settings.merge(general_settings)
 
+print("# Setup settings")
+
 
 '''
 Construct the encoder-decoder pair:
 '''
 encoder = model_builder.build_encoder(encoder_settings, train_triplets)
 model = model_builder.build_decoder(encoder, decoder_settings)
+print("# Setup model")
 
 '''
 Construct the optimizer with validation MRR as early stopping metric:
@@ -250,7 +253,7 @@ if 'NegativeSampleRate' in general_settings:
 '''
 Initialize for training:
 '''
-
+print("# Initialize for training")
 # Hack for validation evaluation:
 model.preprocess(train_triplets)
 model.register_for_test(train_triplets)
@@ -260,7 +263,7 @@ model.initialize_train()
 optimizer_weights = model.get_weights()
 optimizer_input = model.get_train_input_variables()
 loss = model.get_loss(mode='train') + model.get_regularization()
-print(optimizer_input)
+print("# optimizer_input", optimizer_input)
 
 '''
 Clean this up:
@@ -280,5 +283,6 @@ optimizer = build_tensorflow(loss, optimizer_weights, optimizer_parameters, opti
 optimizer.set_session(model.session)
 
 optimizer.fit(train_triplets, validation_data=valid_triplets)
+print("# Done")
 #scorer.dump_all_scores(valid_triplets, 'dumps/subjects.valid', 'dumps/objects.valid')
 #scorer.dump_all_scores(test_triplets, 'dumps/subjects.test', 'dumps/objects.test')
