@@ -278,10 +278,12 @@ optimizer_parameters = opp.get_parametrization()
 Train with Converge:
 '''
 
+print("# Start training")
 model.session = tf.Session()
 optimizer = build_tensorflow(loss, optimizer_weights, optimizer_parameters, optimizer_input)
 optimizer.set_session(model.session)
 
+print("# Fitting training data")
 optimizer.fit(train_triplets, validation_data=valid_triplets)
 print("# Done")
 #scorer.dump_all_scores(valid_triplets, 'dumps/subjects.valid', 'dumps/objects.valid')
